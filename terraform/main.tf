@@ -11,7 +11,12 @@ provider "aws" {
   region = "eu-west-2" # London
 }
 
-resource "aws_vpc" "example" {
-  cidr_block = "10.0.0.0/16"
-}
+resource "aws_instance" "WebSRV-1" {
+    ami = "ami-04da26f654d3383cf"
+    instance_type = "t2.micro"
 
+    tags = {
+      Name = "WebSRV-1"
+    }
+  
+}
