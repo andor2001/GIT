@@ -13,7 +13,7 @@ provider "aws" {
 
 # create instance Web sever 1
 resource "aws_instance" "WebSRV-1" {
-    ami = "ami-04da26f654d3383cf"
+    ami = var.ami_id
     instance_type = "t2.micro"
 
     tags = {
