@@ -120,7 +120,7 @@ resource "aws_instance" "web" {
     Name = "Hello web!"
 
 # update apt repository & upgrade system & install nginx
-  user_data = << EOF
+  user_data = <<EOF
    #!/bin/bash
    apt update
    apt upgrade -y
