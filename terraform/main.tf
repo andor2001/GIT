@@ -11,6 +11,8 @@ provider "aws" {
   region = "eu-west-2" # London
 }
 
+#################################################################################
+# create vpc for web_srv
 resource "aws_vpc" "vpc_web_srv" {
   cidr_block = "10.0.0.0/16"
   tags = {
@@ -18,6 +20,7 @@ resource "aws_vpc" "vpc_web_srv" {
   }
 }
 
+# create subnet for public network
 resource "aws_subnet" "public" {
   vpc_id = aws_vpc.vpc_web_srv.id
   cidr_block = "10.0.1.0/24"
@@ -27,6 +30,7 @@ resource "aws_subnet" "public" {
   }
 }
 
+## create subnet for private network
 # resource "aws_subnet" "private" {
 #   vpc_id = aws_instance.web.id
 #   cidr_block = "10.0.2.0/24"
@@ -36,6 +40,7 @@ resource "aws_subnet" "public" {
 #   }
 # }
 
+# create internet gateway
 resource "aws_internet_gateway" "ig_web_srv" {
   vpc_id = aws_vpc.vpc_web_srv.id
 
@@ -44,6 +49,7 @@ resource "aws_internet_gateway" "ig_web_srv" {
   }
 }
 
+# create route via internet gateway
 resource "aws_route_table" "rt_ig" {
   vpc_id = aws_vpc.vpc_web_srv.id
 
@@ -57,16 +63,19 @@ resource "aws_route_table" "rt_ig" {
   }
 }
 
+# association route table to private net
 resource "aws_route_table_association" "asoc_priv_net" {
   subnet_id = aws_subnet.public.id
   route_table_id = aws_route_table.rt_ig.id
 }
 
+# create security group 
 resource "aws_security_group" "sg_web_srv" {
   name = "ssh_web"
   description = "Allow 22 and 80 ports traffic"
   vpc_id = aws_vpc.vpc_web_srv.id
   
+  # allow ssh input traffic from all ip address
   ingress {
     description = "SSH from VPC"
     from_port = 22
@@ -75,6 +84,7 @@ resource "aws_security_group" "sg_web_srv" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # allow http input traffic from all ip address
   ingress {
     description = "WEB form VPC"
     from_port = 80
@@ -83,6 +93,7 @@ resource "aws_security_group" "sg_web_srv" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # output traffic all ports and all ip address
   egress {
     from_port = 0
     to_port = 0
@@ -95,6 +106,7 @@ resource "aws_security_group" "sg_web_srv" {
   }
 }
 
+# create instance
 resource "aws_instance" "web" {  
   ami = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -103,18 +115,20 @@ resource "aws_instance" "web" {
   associate_public_ip_address = true
   key_name = "andor2001@ukr.net"
 
-# user_data = << EOF
-# #!/bin/bash
-# apt update
-# apt upgrade -y
-# apt install nginx -y
-# EOF
 
   tags = {
     Name = "Hello web!"
+
+# update apt repository & upgrade system & install nginx
+  user_data = << EOF
+   #!/bin/bash
+   apt update
+   apt upgrade -y
+   apt install nginx -y
+   EOF
   }
 }
-
+# get instance public ip address
 output "ec2_public_ip" {
   value = aws_instance.web.public_ip
 }
