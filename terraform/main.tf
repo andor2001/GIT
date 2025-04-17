@@ -93,6 +93,15 @@ resource "aws_security_group" "sg_web_srv" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # allow icmp input traffic from all ip address
+  ingress {
+    description = "ICMP from VPC"
+    from_port = 8
+    to_port = 0
+    protocol = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # output traffic all ports and all ip address
   egress {
     from_port = 0
