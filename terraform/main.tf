@@ -20,6 +20,7 @@ resource "aws_vpc" "vpc_web_srv" {
   }
 }
 
+#################################################################################
 # create subnet for public network
 resource "aws_subnet" "public" {
   vpc_id = aws_vpc.vpc_web_srv.id
@@ -29,7 +30,7 @@ resource "aws_subnet" "public" {
     Name = "Public-Net"
   }
 }
-
+#################################################################################
 ## create subnet for private network
 # resource "aws_subnet" "private" {
 #   vpc_id = aws_instance.web.id
@@ -40,6 +41,7 @@ resource "aws_subnet" "public" {
 #   }
 # }
 
+#################################################################################
 # create internet gateway
 resource "aws_internet_gateway" "ig_web_srv" {
   vpc_id = aws_vpc.vpc_web_srv.id
