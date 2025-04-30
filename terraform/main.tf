@@ -127,18 +127,23 @@ resource "aws_instance" "web" {
   vpc_security_group_ids = [aws_security_group.sg_web_srv.id]
   associate_public_ip_address = true
   key_name = "andor2001@ukr.net"
+  user_data = file("websrv.sh")
 
+#  private_dns_name_options {
+#    hostname_type = "web_srv.pvt"
+#  }
 
   tags = {
     Name = "Hello web!"
 
-# update apt repository & upgrade system & install nginx
-  user_data = <<EOF
-   #!/bin/bash
-   apt update
-   apt upgrade -y
-   apt install nginx -y
-   EOF
+# # update apt repository & upgrade system & install nginx
+#   user_data = <<EOF
+#    #!/bin/bash
+#    hostnamectl set-hostname webSRV.pvt
+#    apt update
+#    apt upgrade -y
+#    apt install nginx -y
+#    EOF
   }
 }
 # get instance public ip address
