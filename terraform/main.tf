@@ -10,10 +10,10 @@ terraform {
 provider "aws" {
   region = "eu-west-2" # London
 }
+
 #################################################################################
 #                                                                               #
 #################################################################################
-
 # create vpc for web_srv
 resource "aws_vpc" "vpc_web_srv" {
   cidr_block = "10.0.0.0/16"
@@ -32,6 +32,7 @@ resource "aws_subnet" "public" {
     Name = "Public-Net"
   }
 }
+
 #################################################################################
 ## create subnet for private network
 # resource "aws_subnet" "private" {
@@ -145,4 +146,3 @@ resource "aws_instance" "web" {
 output "ec2_public_ip" {
   value = aws_instance.web.public_ip
 }
-
