@@ -32,16 +32,14 @@ resource "proxmox_vm_qemu" "test_server_2" {
 
   # another variable with contents "ubuntu-2004-cloudinit-template"
   clone = var.template_name
-
-  # from iso image
-  iso = "ubuntu-24.04.2-live-server-amd64.iso" #ISO file
-
+  # iso = var.iso_name
+  
   # basic VM settings here. agent refers to guest agent
   agent = 1
-  os_type = "cloud-init"
+  os_type = "ubuntu"
   cores = 2
   sockets = 1
-  cpu = "host"
+  cpu = "kvm64"
   memory = 2048
   scsihw = "virtio-scsi-pci"
   bootdisk = "scsi0"
