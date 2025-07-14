@@ -127,7 +127,8 @@ resource "aws_instance" "web" {
   subnet_id = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.sg_web_srv.id]
   associate_public_ip_address = true
-  key_name = "andor2001@ukr.net"
+  key_name = "aws_key_andor2001"
+  count = 1
 
 
   tags = {
@@ -143,6 +144,6 @@ resource "aws_instance" "web" {
   }
 }
 # get instance public ip address
-output "ec2_public_ip" {
-  value = aws_instance.web.public_ip
+output "ec2_public_ip_ipv4_pool" {
+  value = aws_instance.web[*].public_ip
 }
