@@ -7,3 +7,7 @@ button:hover { background: #555; }
 .col-2 { grid-column: span 2; }
 .equal { background: #ff9500; }
 .equal:hover { background: #e08400; }
+.btn-random {
+    background-color: #5856d6; /* Фіолетовий колір для рандому */
+    color: white;
+}

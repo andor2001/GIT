@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+    <meta charset="UTF-8">
+    <title>IP Subnet Calculator 2025</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Калькулятор підмережі</h2>
+        <div class="input-form">
+            <div class="field">
+                <label>IP-адрес:</label>
+                <input type="text" id="ip" placeholder="192.168.1.1" value="192.168.1.1">
+            </div>
+            <div class="field">
+                <label>Маска (CIDR):</label>
+                <select id="cidr"></select>
+            </div>
+            <button onclick="calculateSubnet()">Розрахувати</button>
+        </div>
+        
+        <div id="results" class="results">
+            <p>Результат буде виведено тут...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Динамическое заполнение CIDR от /32 до /1
+        const select = document.getElementById('cidr');
+        for(let i=32; i>=1; i--) {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = `/${i}`;
+            if(i === 24) opt.selected = true; // По умолчанию /24
+            select.appendChild(opt);
+        }
+    </script>
+</body>
+</html>
