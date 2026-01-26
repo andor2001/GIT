@@ -1,6 +1,7 @@
 # 1. Провайдер та Група ресурсів
 provider "azurerm" {
   features {}
+  subscription_id = "8103f804-568e-4c9e-b325-a2d5578b24c2"
 }
 
 resource "azurerm_resource_group" "main" {
@@ -35,7 +36,7 @@ resource "azurerm_public_ip" "frontend" {
   name                = "pip-frontend"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
 }
 
 # 4. Мережеві інтерфейси (NIC)
@@ -99,7 +100,7 @@ resource "azurerm_linux_virtual_machine" "frontend" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = file("~/.ssh/id_rsa.pub") # Шлях до вашого публічного ключа
+    public_key = file("~/owncloud/ANDOR/CREDENTIALS/azure/test_key.pub") # Шлях до вашого публічного ключа
   }
 
   os_disk {
@@ -125,7 +126,7 @@ resource "azurerm_linux_virtual_machine" "backend" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = file("~/owncloud/ANDOR/CREDENTIALS/azure/test_key.pub")
   }
 
   os_disk {
