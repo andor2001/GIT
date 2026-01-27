@@ -141,3 +141,15 @@ resource "azurerm_linux_virtual_machine" "backend" {
     version   = "latest"
   }
 }
+
+# Вивід публічної IP-адреси FrontEnd машини
+output "frontend_public_ip" {
+  description = "Публічна IP-адреса для доступу до FrontEnd"
+  value       = azurerm_linux_virtual_machine.frontend.public_ip_address
+}
+
+# Додатково: Вивід приватної IP-адреси BackEnd машини
+output "backend_private_ip" {
+  description = "Внутрішня IP-адреса BackEnd машини"
+  value       = azurerm_linux_virtual_machine.backend.private_ip_address
+}
